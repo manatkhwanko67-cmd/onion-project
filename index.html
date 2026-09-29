@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="หัวหอม — ระบบค้นหาหนังและซีรีส์ตามความรู้สึกด้วย Information Retrieval">
+<title>🧅 หัวหอม — ระบบค้นหาหนังและซีรีส์ตามความรู้สึก</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#home" aria-label="กลับหน้าหลัก"><span class="brand-onion"><img src="assets/purple-onion.png" alt="หัวหอม"></span><span><b>หัวหอม</b><small>ระบบค้นหาหนังและซีรีส์ตามความรู้สึก</small></span></a>
+    <nav class="main-nav" aria-label="เมนูหลัก">
+      <a href="#home" data-nav="home">หน้าแรก</a>
+      <a href="#favorites" data-nav="favorites">รายการโปรด <span id="favoriteCount" class="nav-count">0</span></a>
+      <a href="#history" data-nav="history">ประวัติการค้นหา</a>
+      <a href="#about" data-nav="about">เกี่ยวกับเรา</a>
+    </nav>
+    <button id="themeToggle" class="icon-btn" aria-label="เปลี่ยนโหมดสี" title="เปลี่ยนโหมดสี">☾</button>
+    <button id="mobileMenu" class="icon-btn mobile-menu" aria-label="เปิดเมนู">☰</button>
+  </div>
+</header>
+
+<main>
+<section id="home" class="page">
+  <div class="hero-wrap">
+    <div class="hero-decor decor-a"></div><div class="hero-decor decor-b"></div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-onion"><img src="assets/orange-onion.png" alt="หัวหอมน่ารัก"></div>
+        <div class="eyebrow">ONION · INFORMATION RETRIEVAL</div>
+        <h1>ไม่รู้จะดูอะไร?<br><span>บอกหัวหอม</span></h1>
+        <p>พิมพ์ความรู้สึก อารมณ์ หรือสถานการณ์ที่กำลังเจอ<br>หัวหอมจะค้นหาหนังและซีรีส์ที่ตรงกับคุณ ✨</p>
+        <form id="searchForm" class="search-box">
+          <textarea id="queryInput" rows="2" placeholder="เช่น วันนี้เหนื่อย อยากดูอะไรตลก ๆ เบาสมอง..."></textarea>
+          <div class="search-bottom">
+            <!-- <div class="suggestions">
+              <button type="button" class="chip" data-query="วันนี้เหนื่อย อยากดูอะไรตลก ๆ เบาสมอง">เศร้า เหงา 😔</button>
+              <button type="button" class="chip" data-query="อยากมีความสุข ดูอะไรอบอุ่นหัวใจ">อยากยิ้มตาม 😊</button>
+              <button type="button" class="chip" data-query="ตื่นเต้น ลุ้นระทึก">ตื่นเต้น ลุ้นระทึก 🔥</button>
+              <button type="button" class="chip" data-query="ดูยาว ๆ วันหยุด">ดูยาว ๆ 📺</button>
+              <button type="button" class="chip" data-query="อยากอบอุ่นหัวใจ">อบอุ่นหัวใจ 💗</button>
+            </div> -->
+            <button class="primary-btn search-btn" type="submit"><span>⌕</span> ค้นหาหนัง</button>
+          </div>
+        </form>
+        <div id="datasetStatus" class="dataset-status">กำลังโหลด Dataset...</div>
+        <div class="onion-pick">
+          <div class="onion-pick-copy"><span>🎲</span><div><b>ไม่รู้จะเลือกเรื่องไหนดี?</b><small>ให้หัวหอมสุ่มเรื่องให้คุณจาก Dataset</small></div></div>
+          <button id="randomPickBtn" class="outline-btn onion-pick-btn" type="button">🧅 หัวหอม เลือกให้ฉัน!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section onion-mood-section">
+    <div class="section-heading"><div><div class="eyebrow">ONION MOOD</div><h2>วันนี้คุณรู้สึกยังไง?</h2><p class="mood-subtitle">เลือกความรู้สึก แล้วให้หัวหอมช่วยค้นหาเรื่องที่เข้ากับคุณ 🧅</p></div></div>
+    <div id="moodGrid" class="mood-grid">
+      <button class="mood-card" data-mood-query="เศร้า เหงา อยากดูอะไรที่เข้าใจความรู้สึก"><span>😔</span><b>เศร้า เหงา</b><small>อยากมีเพื่อนอยู่ข้าง ๆ</small></button>
+      <button class="mood-card" data-mood-query="วันนี้เหนื่อย อยากดูอะไรตลก เบาสมอง"><span>😴</span><b>เหนื่อย</b><small>อยากพักสมอง</small></button>
+      <button class="mood-card" data-mood-query="อยากดูอะไรตลก สนุก มีความสุข"><span>😂</span><b>อยากหัวเราะ</b><small>ขออะไรสนุก ๆ</small></button>
+      <button class="mood-card" data-mood-query="อยากดูเรื่องโรแมนติก ความรัก ฟิน ๆ"><span>💕</span><b>อยากมีความรัก</b><small>ขอฟินหัวใจ</small></button>
+      <button class="mood-card" data-mood-query="อยากดูอะไรตื่นเต้น ลุ้น ระทึก"><span>🔥</span><b>อยากตื่นเต้น</b><small>ขอความมันส์</small></button>
+      <button class="mood-card" data-mood-query="อยากดูเรื่องสยองขวัญ หลอน น่ากลัว"><span>👻</span><b>อยากหลอน</b><small>คืนนี้ขอหลอน ๆ</small></button>
+      <button class="mood-card" data-mood-query="อยากดูอะไรอบอุ่น ดูสบาย ๆ feel good"><span>🌱</span><b>อยากสบาย ๆ</b><small>ดูแล้วสบายใจ</small></button>
+    </div>
+  </section>
+
+  <section class="section trending-section">
+    <div class="section-heading">
+      <div><div class="eyebrow">ONION TRENDING</div><h2>🔥 กำลังมาแรง</h2><p class="trending-subtitle">เรื่องที่น่าสนใจจากคะแนนใน Dataset และสิ่งที่ผู้ใช้บันทึกไว้</p></div>
+      <button id="refreshTrendingBtn" class="outline-btn" type="button">↻ ดูอีกชุด</button>
+    </div>
+    <div id="trendingGrid" class="trending-grid"></div>
+  </section>
+
+  <section class="section home-categories">
+    <div class="section-heading"><div><div class="eyebrow">EXPLORE</div><h2>เลือกตามอารมณ์ที่คุณสนใจ</h2></div><span id="categoryCount" class="section-count"></span></div>
+    <div id="categoryGrid" class="category-grid"></div>
+  </section>
+</section>
+
+<section id="results" class="page hidden">
+  <div class="section results-section">
+    <button class="back-link" id="backHomeBtn">← กลับไปค้นหาใหม่</button>
+    <div class="search-summary">
+      <div><div class="eyebrow">SEARCH RESULTS</div><h1>ผลการค้นหา</h1><p>คุณค้นหา: <strong id="searchedText"></strong></p></div>
+      <div class="search-summary-actions"><button id="shareResultsBtn" class="outline-btn share-btn" type="button">📤 แชร์ผลการค้นหา</button><button id="moreBtn" class="outline-btn">↻ ค้นหาเรื่องเพิ่มเติม</button></div>
+    </div>
+    <div id="intentPanel" class="intent-panel"></div>
+    <div class="filter-panel" aria-label="ตัวกรองผลการค้นหา">
+      <div class="filter-heading"><strong>⚙ ตัวกรองและการเรียงลำดับ</strong><button id="resetFiltersBtn" class="filter-reset" type="button">รีเซ็ตตัวกรอง</button></div>
+      <div class="filter-grid">
+        <label>หมวดหมู่<select id="filterGenre"></select></label>
+        <label>ปี<select id="filterYear"></select></label>
+        <label>คะแนนขั้นต่ำ<select id="filterRating"></select></label>
+        <label>เรียงตาม<select id="sortBy"><option value="score">ความเกี่ยวข้อง</option><option value="rating">คะแนนสูงสุด</option><option value="year">ปีล่าสุด</option><option value="title">ชื่อ A-Z</option></select></label>
+      </div>
+    </div>
+    <div class="result-tabs" role="tablist">
+      <button class="result-tab active" data-filter="all">แนะนำสำหรับคุณ</button>
+      <button class="result-tab" data-filter="Movie">หนัง</button>
+      <button class="result-tab" data-filter="Series">ซีรีส์</button>
+      <!-- <button class="result-tab" data-filter="Documentary">สารคดี</button> -->
+    </div>
+    <div id="resultMeta" class="result-meta"></div>
+    <div id="resultsGrid" class="movie-grid"></div>
+  </div>
+</section>
+
+<section id="detail" class="page hidden"></section>
+
+<section id="favorites" class="page hidden">
+  <div class="section list-section">
+    <div class="page-title"><div><div class="eyebrow">YOUR COLLECTION</div><h1>รายการโปรด <span id="favoritesTotal" class="favorite-total">0</span></h1><p>เรื่องที่คุณบันทึกไว้ดูภายหลัง</p></div><div class="favorites-header-actions"><span class="title-icon">♥</span><button id="clearFavoritesBtn" class="danger-btn" type="button">ล้างรายการโปรด</button></div></div>
+    <div class="favorites-tools">
+      <div class="favorite-tabs" id="favoriteTabs">
+        <button class="favorite-tab active" data-favorite-filter="all">ทั้งหมด <span id="favCountAll">0</span></button>
+        <button class="favorite-tab" data-favorite-filter="Movie">🎬 Movie <span id="favCountMovie">0</span></button>
+        <button class="favorite-tab" data-favorite-filter="Series">📺 Series <span id="favCountSeries">0</span></button>
+        <!-- <button class="favorite-tab" data-favorite-filter="Documentary">🎥 Documentary <span id="favCountDocumentary">0</span></button> -->
+      </div>
+      <div class="favorites-control-row">
+        <label class="favorite-search"><span>⌕</span><input id="favoriteSearchInput" type="search" placeholder="ค้นหาในรายการโปรด..."></label>
+        <select id="favoriteSort">
+          <option value="added">เพิ่มล่าสุด</option>
+          <option value="rating">คะแนนสูงสุด</option>
+          <option value="year">ปีล่าสุด</option>
+          <option value="title">ชื่อ A-Z</option>
+        </select>
+      </div>
+    </div>
+    <div id="favoritesSummary" class="favorites-summary"></div>
+    <div id="favoritesGrid" class="movie-grid"></div>
+  </div>
+</section>
+
+<section id="history" class="page hidden">
+  <div class="section list-section">
+    <div class="page-title history-title"><div><div class="eyebrow">YOUR SEARCHES</div><h1>ประวัติการค้นหา</h1><p>ย้อนกลับไปยังสิ่งที่คุณเคยค้นหา</p></div><button id="clearHistoryBtn" class="danger-btn">ล้างประวัติทั้งหมด</button></div>
+    <div class="history-toolbar">
+      <input id="historySearchInput" type="search" placeholder="🔎 ค้นหาในประวัติ...">
+      <select id="historySort"><option value="newest">ล่าสุดก่อน</option><option value="oldest">เก่าสุดก่อน</option><option value="az">คำค้น A-Z</option></select>
+    </div>
+    <div id="historyStats" class="history-stats"></div>
+    <div id="historyList" class="history-list"></div>
+  </div>
+</section>
+
+<section id="about" class="page hidden">
+  <div class="section about-section">
+    <div class="about-hero">
+      <div class="about-hero-copy">
+        <div class="about-mascot"><img src="assets/purple-onion.png" alt="หัวหอม Onion Project"></div>
+        <div class="about-intro">
+          <div class="eyebrow">ABOUT ONION PROJECT</div>
+          <h1>หัวหอม <span>(Onion Project)</span></h1>
+          <h2>ระบบค้นหาหนังและซีรีส์ตามความรู้สึก</h2>
+          <p><b>หัวหอม (Onion)</b> คือระบบที่ช่วยให้ผู้ใช้ค้นหาหนังและซีรีส์จากสิ่งที่กำลังรู้สึก ความต้องการ หรือสถานการณ์ที่พบเจอ โดยไม่จำเป็นต้องรู้ชื่อเรื่องล่วงหน้า</p>
+          <p>เพียงบอกหัวหอมว่า <em>“วันนี้เหนื่อย อยากดูอะไรตลก ๆ”</em> หรือ <em>“อยากดูซีรีส์โรแมนติกอบอุ่นหัวใจ”</em> ระบบจะค้นหาข้อมูลที่เกี่ยวข้องจาก Dataset และจัดอันดับเรื่องที่เหมาะกับคุณ</p>
+        </div>
+      </div>
+      <div class="about-quote">“ไม่รู้จะดูอะไร?<br>แค่บอกความรู้สึก<br>เดี๋ยวหัวหอมช่วยเลือกให้” 💜</div>
+    </div>
+
+    <section class="about-block about-problem">
+      <div class="about-block-title">
+        <span class="about-title-icon">🎯</span>
+        <div><div class="eyebrow">THE PROBLEM</div><h2>ปัญหาที่หัวหอมต้องการแก้</h2><p>ช่วยให้การเลือกหนังและซีรีส์ง่ายขึ้นในวันที่ไม่รู้จะดูอะไร</p></div>
+      </div>
+      <div class="problem-grid">
+        <article class="problem-card"><span>🤔</span><h3>ไม่รู้จะดูอะไร</h3><p>ผู้ใช้มีเวลาว่าง แต่อาจไม่รู้ว่าจะเลือกหนังหรือซีรีส์เรื่องไหนดี</p></article>
+        <article class="problem-card"><span>🔎</span><h3>ค้นหาด้วยชื่อเรื่องไม่ได้เสมอไป</h3><p>บางครั้งเรารู้เพียงความรู้สึกหรืออารมณ์ แต่ไม่รู้ชื่อเรื่องที่ต้องการ</p></article>
+        <article class="problem-card"><span>🎬</span><h3>มีตัวเลือกจำนวนมาก</h3><p>เมื่อมีเนื้อหาจำนวนมาก การเลือกด้วยตัวเองอาจใช้เวลาและตัดสินใจยาก</p></article>
+      </div>
+      <div class="about-highlight">💡 หัวหอมจึงเปลี่ยนการค้นหาจาก <b>“จำชื่อเรื่องให้ได้”</b> เป็น <b>“บอกความรู้สึกและความต้องการ”</b></div>
+    </section>
+
+    <section class="about-block ir-block">
+      <div class="about-block-title">
+        <span class="about-title-icon">🔎</span>
+        <div><div class="eyebrow">INFORMATION RETRIEVAL</div><h2>Information Retrieval (IR) คืออะไร?</h2></div>
+      </div>
+      <div class="ir-explain">
+        <p><b>Information Retrieval หรือ IR</b> คือกระบวนการค้นหาและนำข้อมูลที่เกี่ยวข้องกับความต้องการของผู้ใช้มากที่สุดออกมาจากชุดข้อมูลจำนวนมาก</p>
+        <p>สำหรับ Onion Project ระบบ IR จะนำข้อความที่ผู้ใช้พิมพ์ไปเปรียบเทียบกับข้อมูลของหนังและซีรีส์ เช่น <b>ชื่อเรื่อง ประเภท หมวดหมู่ Mood Theme Situation Keywords และ Description</b> จากนั้นคำนวณความเกี่ยวข้องและจัดอันดับผลลัพธ์</p>
+      </div>
+      <div class="ir-flow">
+        <div class="flow-step"><span>👤</span><b>ผู้ใช้พิมพ์ความต้องการ</b><small>“วันนี้เหนื่อย อยากดูอะไรตลก ๆ”</small></div>
+        <i>→</i>
+        <div class="flow-step"><span>🔎</span><b>วิเคราะห์คำค้น</b><small>เหนื่อย · ตลก · เบาสมอง</small></div>
+        <i>→</i>
+        <div class="flow-step"><span>🗂️</span><b>ค้นหาใน Dataset</b><small>เปรียบเทียบกับข้อมูลหนังและซีรีส์</small></div>
+        <i>→</i>
+        <div class="flow-step"><span>📊</span><b>คำนวณความเกี่ยวข้อง</b><small>TF-IDF + Cosine Similarity</small></div>
+        <i>→</i>
+        <div class="flow-step"><span>🏆</span><b>Ranking</b><small>จัดอันดับเรื่องที่ตรงที่สุด</small></div>
+        <i>→</i>
+        <div class="flow-step"><span>🎬</span><b>แสดงผลลัพธ์</b><small>แนะนำเรื่องที่เหมาะกับคุณ</small></div>
+      </div>
+    </section>
+
+    <section class="about-block">
+      <div class="about-block-title">
+        <span class="about-title-icon">🧠</span>
+        <div><div class="eyebrow">HOW THE SYSTEM WORKS</div><h2>เทคนิคที่ใช้ในระบบ</h2><p>หัวใจสำคัญของการค้นหาและจัดอันดับข้อมูล</p></div>
+      </div>
+      <div class="tech-grid about-tech-grid">
+        <article class="tech-card"><span class="tech-emoji">📄</span><b>TF-IDF</b><p>วิเคราะห์และวัดความสำคัญของคำที่ปรากฏในข้อมูลหนังและซีรีส์</p></article>
+        <article class="tech-card"><span class="tech-emoji">📐</span><b>Cosine Similarity</b><p>วัดความคล้ายกันระหว่างคำค้นของผู้ใช้กับข้อมูลแต่ละเรื่อง</p></article>
+        <article class="tech-card"><span class="tech-emoji">🏆</span><b>Ranking</b><p>เรียงลำดับผลลัพธ์จากเรื่องที่มีความเกี่ยวข้องมากที่สุด</p></article>
+        <article class="tech-card"><span class="tech-emoji">🎯</span><b>Information Retrieval</b><p>กระบวนการค้นหา เปรียบเทียบ และคืนข้อมูลที่ตรงกับความต้องการ</p></article>
+      </div>
+    </section>
+
+    <section class="about-block dataset-block">
+      <div class="about-block-title">
+        <span class="about-title-icon">🗃️</span>
+        <div><div class="eyebrow">DATASET</div><h2>ข้อมูลที่ใช้ในการค้นหา</h2><p>ระบบสามารถอ่านข้อมูลจาก CSV ได้แบบ Dynamic และเพิ่มข้อมูลต่อไปได้</p></div>
+      </div>
+      <div class="dataset-tags">
+        <span>🎬 ชื่อเรื่อง</span><span>📺 ประเภท</span><span>🎭 Genre</span><span>😊 Mood</span><span>💡 Theme</span><span>📍 Situation</span><span>✨ Preference</span><span>🔑 Keywords</span><span>📝 Description</span><span>⭐ Rating</span><span>🌍 Language / Country</span>
+      </div>
+    </section>
+
+    <section class="about-block about-features">
+      <div class="about-block-title">
+        <span class="about-title-icon">💜</span>
+        <div><div class="eyebrow">WHY ONION</div><h2>จุดเด่นของ Onion Project</h2></div>
+      </div>
+      <div class="feature-grid">
+        <div><span>💗</span><b>ค้นหาตามความรู้สึก</b><small>ไม่จำเป็นต้องรู้ชื่อหนัง</small></div>
+        <div><span>🎬</span><b>รองรับหนังและซีรีส์</b><small>ค้นหาจาก Dataset</small></div>
+        <div><span>🧠</span><b>ใช้หลักการ IR</b><small>ค้นหาอย่างเป็นระบบ</small></div>
+        <div><span>❤️</span><b>บันทึกรายการโปรด</b><small>เก็บเรื่องที่อยากดู</small></div>
+        <div><span>🕘</span><b>ประวัติการค้นหา</b><small>ย้อนกลับมาดูได้</small></div>
+        <div><span>🎲</span><b>หัวหอมเลือกให้</b><small>ช่วยตัดสินใจเมื่อเลือกไม่ถูก</small></div>
+      </div>
+    </section>
+  </div>
+</section>
+</main>
+
+<footer><div>🧅 <b>หัวหอม</b> — ระบบค้นหาหนังและซีรีส์ตามความรู้สึก</div><small>Information Retrieval · TF-IDF · Cosine Similarity · Ranking</small></footer>
+<div id="randomModal" class="random-modal hidden" role="dialog" aria-modal="true" aria-label="สุ่มหนังหรือซีรีส์">
+  <div class="random-dialog">
+    <button id="randomCloseBtn" class="random-close" type="button" aria-label="ปิด">×</button>
+    <div class="random-title"><span>🎲</span><div><div class="eyebrow">ONION RANDOM PICK</div><h2>หัวหอม เลือกให้ฉัน!</h2><p>เลือกเงื่อนไข หรือปล่อยให้หัวหอมสุ่มให้ทั้งหมด</p></div></div>
+    <div class="random-filters">
+      <label>ประเภท<select id="randomType"><option value="all">ทั้งหมด</option><option value="Movie">Movie</option><option value="Series">Series</option></select></label>
+      <label>หมวดหมู่<select id="randomGenre"><option value="all">ทุกหมวดหมู่</option></select></label>
+    </div>
+    <div id="randomResult" class="random-result"><div class="random-placeholder">🧅<br><small>กดปุ่มเพื่อให้หัวหอมเลือกเรื่องให้คุณ</small></div></div>
+    <button id="randomPickAgainBtn" class="primary-btn random-main-btn" type="button">🎲 สุ่มให้ฉัน</button>
+  </div>
+</div>
+<div id="toast" class="toast" aria-live="polite"></div>
+<button id="toTop" class="to-top" aria-label="กลับขึ้นด้านบน">↑</button>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
